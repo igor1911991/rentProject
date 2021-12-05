@@ -9,6 +9,15 @@ import java.sql.SQLException;
 
 public class ClientDao {
 
+    //TODO delete this 26/11/21 19:37
+    public ClientDao() {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private static final String INSERT_CLIENT = "INSERT INTO client( " +
             " given_name, phone_number, date_of_birth, drivers_license) " +
             " VALUES (?, ?, ?, ?);";
@@ -16,15 +25,21 @@ public class ClientDao {
     private static final String SELECT_CLIENT = "SELECT * " +
             "FROM client WHERE client_id = ?";
 
-    private Connection getConnection() throws SQLException {
-        return ConnectionBuilder.getConnection();
+
+    private ConnectionBuilder connectionBuilder;
+
+    public void setConnectionBuilder(ConnectionBuilder connectionBuilder) {
+        this.connectionBuilder = connectionBuilder;
     }
 
-    //добавление клиента
-    public Integer saveClient(Connection con, Client client) throws SQLException {
+    private Connection getConnection() throws SQLException {
+        return connectionBuilder.getConnection();
+    }
+
+    public Integer saveClient(Client client) throws SQLException {
         int result = -1;
 
-        try (PreparedStatement stmt = con.prepareStatement(INSERT_CLIENT, new String[] {"client_id"} )) {
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(INSERT_CLIENT, new String[] {"client_id"} )) {
             stmt.setString(1, client.getName());
             stmt.setInt(2, client.getPhoneNumber());
             stmt.setDate(3, java.sql.Date.valueOf(client.getDateOfBirth()));
@@ -46,7 +61,6 @@ public class ClientDao {
 
     }
 
-    //получение клиента
     public Client getClient(Integer pattern) throws SQLException {
         Client result = null;
 

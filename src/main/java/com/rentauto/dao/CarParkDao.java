@@ -12,13 +12,6 @@ import java.util.List;
 public class CarParkDao {
 
 
-       //ищем авто
-//    public static void main(String[] args) throws SQLException{
-
-//        CarParkDao a = new CarParkDao();
-//        a.findAuto("123456789");
-//    }
-
     private static final String SELECT_CAR = "SELECT * " +
             "FROM auto WHERE UPPER(vin) LIKE UPPER(?)";
 
@@ -27,13 +20,17 @@ public class CarParkDao {
            " VALUES (?, ?, ?, ?, ?, ?);";
 
 
+    private ConnectionBuilder connectionBuilder;
+
+    public void setConnectionBuilder(ConnectionBuilder connectionBuilder) {
+        this.connectionBuilder = connectionBuilder;
+    }
 
     private Connection getConnection() throws SQLException {
-        return ConnectionBuilder.getConnection();
+        return connectionBuilder.getConnection();
     }
 
     //TODO delete temporary method
-    //поиск авто
     public List<Auto> findAuto(String pattern) throws SQLException {
         List<Auto> result = new LinkedList<>();
 
@@ -71,15 +68,15 @@ public class CarParkDao {
         return result;
     }
 
-    //добавление авто в базу
-    private void saveAuto(Connection con, Auto aut) throws SQLException {
-        try (PreparedStatement stmt = con.prepareStatement(INSERT_CAR)) {
-            stmt.setString(1, aut.getVin());
-            stmt.setString(2, aut.getModel());
-            stmt.setString(3, aut.getCarBody());
-            stmt.setString(4, aut.getTransmission());
-            stmt.setInt(5, aut.getPrice());
-            stmt.setBoolean(6, aut.isBooked());
+    private void saveAuto(Auto auto) throws SQLException {
+
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(INSERT_CAR)) {
+            stmt.setString(1, auto.getVin());
+            stmt.setString(2, auto.getModel());
+            stmt.setString(3, auto.getCarBody());
+            stmt.setString(4, auto.getTransmission());
+            stmt.setInt(5, auto.getPrice());
+            stmt.setBoolean(6, auto.isBooked());
 
             stmt.executeUpdate();
 
@@ -89,7 +86,6 @@ public class CarParkDao {
 
     }
 
-    //получение авто из базы
     public Auto getAuto(String pattern) throws SQLException {
         Auto result = null;
 
@@ -115,17 +111,5 @@ public class CarParkDao {
 
         return result;
     }
-
-
-
-
-//       //добавляем авто в базу
-//    public static void main(String[] args) throws Exception{
-//        Auto car = new Auto("12345678907777777", "lada vesta", "sedan", "manual", 888, false);
-//        CarParkDao r = new CarParkDao();
-//
-//
-//        r.saveAuto(ConnectionBuilder.getConnection(), car);
-//    }
 
 }

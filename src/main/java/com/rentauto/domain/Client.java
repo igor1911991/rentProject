@@ -11,11 +11,6 @@ public class Client {
     String driversLicenseIdentifier;
 
 
-    public Client(String name, int phoneNumber) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-    }
-
     public Client(String name, int phoneNumber, LocalDate dateOfBirth, String driversLicenseIdentifier) {
         this.name = name;
         this.phoneNumber = phoneNumber;

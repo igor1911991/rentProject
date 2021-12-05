@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resource
+            driverClassName="org.postgresql.Driver"
+            maxActive="8"
+            maxIdle="10"
+            maxWait="5000"
+            name="jdbc/rentAuto"
+            username="postgres"
+            password="igorpostgresql"
+            type="javax.sql.DataSource"
+            url="jdbc:postgresql://localhost/rent_auto"
+            validationQuery="SELECT 1">
+    </Resource>
+</Context>

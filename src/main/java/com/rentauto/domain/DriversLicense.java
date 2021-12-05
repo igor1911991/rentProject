@@ -1,9 +1,8 @@
 package com.rentauto.domain;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-public class DriversLicence {
+public class DriversLicense {
 
     private String driversLicenseIdentifier;
     private String category;
@@ -12,9 +11,10 @@ public class DriversLicence {
     private LocalDate dateOfBirth;
     private Boolean expires;                        //истечение срока действия удостоверения
 
+    public DriversLicense() {
+    }
 
-
-    public DriversLicence(String driversLicenseIdentifier, String category, String driverGivenName, String driverSurname, LocalDate dateOfBirth, Boolean expires) {
+    public DriversLicense(String driversLicenseIdentifier, String category, String driverGivenName, String driverSurname, LocalDate dateOfBirth, Boolean expires) {
         this.driversLicenseIdentifier = driversLicenseIdentifier;
         this.category = category;
         this.driverGivenName = driverGivenName;
